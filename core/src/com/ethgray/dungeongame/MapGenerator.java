@@ -21,4 +21,16 @@ public class MapGenerator {
       }
     }
   }
+
+  @Override
+  public String toString() {
+    String output = "";
+    for (int i = 0; i < grid.length; i++) {
+      output += "\n";
+      for (int j = 0; j < grid.length; j++) {
+        output += String.valueOf(grid[i][j]);
+      }
+    }
+    return output;
+  }
 }

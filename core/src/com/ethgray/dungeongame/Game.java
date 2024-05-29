@@ -6,18 +6,25 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Input;
 
 public class Game extends ApplicationAdapter {
+  // LibGDX classes
   SpriteBatch batch;
   Texture bg;
-  Texture js;
   OrthographicCamera cam;
+
+  // Custom Classes
   MapGenerator generator;
+  Joystick js;
+  Buttons b;
 
   @Override
   public void create() {
     // Setup the generator
     generator = new MapGenerator(15, 15);
+    js = new Joystick();
+    b = new Buttons();
 
     Gdx.graphics.setResizable(false);
     Gdx.graphics.setWindowedMode(720, 1280);
@@ -27,18 +34,24 @@ public class Game extends ApplicationAdapter {
 
     batch = new SpriteBatch();
     bg = new Texture("bg.jpg");
-    js = new Texture("js_idle.png");
   }
 
   @Override
   public void render() {
+    // TODO: Add input checking before the camera updates
+    handleInput();
+    // Update the camera
     cam.update();
     batch.setProjectionMatrix(cam.combined);
 
+    // Clear the screen
     ScreenUtils.clear(0, 0, 0, 1);
     batch.begin();
     batch.draw(bg, 0, 0);
-    batch.draw(js, 86, 250);
+
+    // Draw the joystick
+    batch.draw(js.getCurrTexture(), 86, 250);
+    batch.draw(b.getCurrTexture(), 350, 250);
     batch.end();
   }
 
@@ -47,5 +60,30 @@ public class Game extends ApplicationAdapter {
     batch.dispose();
     bg.dispose();
     js.dispose();
+  }
+
+  // Private functions
+  private void handleInput() {
+    // Get direction handling
+    boolean up = (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W));
+    boolean down = (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S));
+    boolean left = (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A));
+    boolean right = (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D));
+    boolean idle = (!up && !down && !left && !right);
+
+    // Get the button input
+    boolean input_b = (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE) || Gdx.input.isKeyPressed(Input.Keys.K));
+    boolean input_a = (Gdx.input.isKeyPressed(Input.Keys.ENTER) || Gdx.input.isKeyPressed(Input.Keys.J));
+    boolean input_both = (input_b && input_a);
+    boolean b_idle = (!input_b && !input_a);
+
+    // Send the boolean array to the Joystick object to update the current direction
+    boolean[] js_pkg = { idle, up, down, left, right };
+    js.handleInput(js_pkg);
+
+    // Send the boolean array to the Buttons object to update the current button
+    // image
+    boolean[] b_pkg = { b_idle, input_b, input_a, input_both };
+    b.handleInput(b_pkg);
   }
 }
