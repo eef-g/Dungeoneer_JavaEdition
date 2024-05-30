@@ -1,9 +1,8 @@
 package com.ethgray.dungeongame;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.Gdx;
 
-public class Joystick {
+public class Joystick extends Helper {
   private Texture[] js_sprites;
 
   private enum JS_DIR {
@@ -60,10 +59,6 @@ public class Joystick {
     js_sprites[2] = loadImage("joystick/js_down.png");
     js_sprites[3] = loadImage("joystick/js_left.png");
     js_sprites[4] = loadImage("joystick/js_right.png");
-  }
-
-  private Texture loadImage(String image) {
-    return new Texture(Gdx.files.internal(image));
   }
 
 }

@@ -1,9 +1,8 @@
 package com.ethgray.dungeongame;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.Gdx;
 
-public class Buttons {
+public class Buttons extends Helper {
   // Enum for state control
   private enum B_STATE {
     NONE(0), B(1), A(2), BOTH(3);
@@ -25,7 +24,6 @@ public class Buttons {
 
   // Constructor
   public Buttons() {
-    System.out.println("Buttons Initialized");
     initTextures();
   }
 
@@ -55,13 +53,9 @@ public class Buttons {
   // Private functions
   private void initTextures() {
     b_imgs = new Texture[4];
-    b_imgs[0] = loadTexture("buttons/b_none.png");
-    b_imgs[1] = loadTexture("buttons/b_b.png");
-    b_imgs[2] = loadTexture("buttons/b_a.png");
-    b_imgs[3] = loadTexture("buttons/b_both.png");
-  }
-
-  private Texture loadTexture(String file) {
-    return new Texture(Gdx.files.internal(file));
+    b_imgs[0] = loadImage("buttons/b_none.png");
+    b_imgs[1] = loadImage("buttons/b_b.png");
+    b_imgs[2] = loadImage("buttons/b_a.png");
+    b_imgs[3] = loadImage("buttons/b_both.png");
   }
 }

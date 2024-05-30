@@ -18,6 +18,7 @@ public class Game extends ApplicationAdapter {
   MapGenerator generator;
   Joystick js;
   Buttons b;
+  Slime slime;
 
   @Override
   public void create() {
@@ -25,6 +26,7 @@ public class Game extends ApplicationAdapter {
     generator = new MapGenerator(15, 15);
     js = new Joystick();
     b = new Buttons();
+    slime = new Slime();
 
     Gdx.graphics.setResizable(false);
     Gdx.graphics.setWindowedMode(720, 1280);
@@ -38,7 +40,6 @@ public class Game extends ApplicationAdapter {
 
   @Override
   public void render() {
-    // TODO: Add input checking before the camera updates
     handleInput();
     // Update the camera
     cam.update();
@@ -49,9 +50,15 @@ public class Game extends ApplicationAdapter {
     batch.begin();
     batch.draw(bg, 0, 0);
 
-    // Draw the joystick
+    // Draw the UI
     batch.draw(js.getCurrTexture(), 86, 250);
     batch.draw(b.getCurrTexture(), 350, 250);
+
+    // TODO: Switch from temporary monster on screen to the game logic
+    // Draw the game
+    batch.draw(slime.getTexture(), 250, 800);
+
+    // End the draw frame
     batch.end();
   }
 
@@ -60,6 +67,7 @@ public class Game extends ApplicationAdapter {
     batch.dispose();
     bg.dispose();
     js.dispose();
+    slime.dispose();
   }
 
   // Private functions
